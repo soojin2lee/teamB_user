@@ -83,7 +83,11 @@ public class PolicyHandler{
             Optional<User> userOptional = userRepo.findById(saved.getUserId());
             if( userOptional.isPresent() ) {
                 User user = userOptional.get();
-                user.setPoint(user.getPoint()+saved.getPoint());
+                if("".equals(user.getPoint())) {
+                    user.setPoint(saved.getPoint());
+                }else{
+                    user.setPoint(user.getPoint()+saved.getPoint());
+                }
 
                 userRepo.save(user);
             }
