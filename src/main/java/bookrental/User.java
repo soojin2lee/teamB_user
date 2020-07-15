@@ -17,6 +17,7 @@ public class User {
     private String userName;
     private Date regTime;
     private Long rentalId;
+    private Integer point;
 
     public User(){
         Date date = new Date();
@@ -61,6 +62,14 @@ public class User {
         this.rentalId = rentalId;
     }
 
+
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
+    }
 
 
 

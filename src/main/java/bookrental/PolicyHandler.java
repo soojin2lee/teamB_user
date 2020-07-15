@@ -75,4 +75,43 @@ public class PolicyHandler{
         }
     }
 
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverSaved_ChangeRentalStatus(@Payload Saved saved){
+
+        if(saved.isMe()){
+            System.out.println("##### listener ChangeRentalStatus : " + saved.toJson());
+            Optional<User> userOptional = userRepo.findById(saved.getUserId());
+            if( userOptional.isPresent() ) {
+                User user = userOptional.get();
+                user.setPoint(user.getPoint()+saved.getPoint());
+
+                userRepo.save(user);
+            }
+            else {
+                System.out.println("cant not find user ID!! : " + saved.getUserId());
+            }
+        }
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverUsed_ChangeRentalStatus(@Payload Used used){
+
+        if(used.isMe()){
+            System.out.println("##### listener ChangeRentalStatus : " + used.toJson());
+            Optional<User> userOptional = userRepo.findById(used.getUserId());
+            if( userOptional.isPresent() ) {
+                User user = userOptional.get();
+                Integer totalPoint = user.getPoint()-used.getPoint();
+                if (totalPoint<0){
+                    user.setPoint(0);
+                }else{
+                    user.setPoint(totalPoint);
+                }
+                userRepo.save(user);
+            }
+            else {
+                System.out.println("cant not find user ID!! : " + used.getUserId());
+            }
+        }
+    }
+
 }
