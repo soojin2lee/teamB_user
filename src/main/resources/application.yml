@@ -37,7 +37,11 @@ logging:
     org.springframework.cloud: debug
 server:
   port: 8082
-  
+
+api:
+  url:
+    point: http://localhost:8086
+
 feign:
   hystrix:
     enabled: true
@@ -73,3 +77,6 @@ spring:
         event-out:
           destination: bookrental
           contentType: application/json
+api:
+  url:
+    point: http://admin04-point:8080
