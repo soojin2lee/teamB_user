@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
 
 
 @SpringBootApplication
@@ -14,5 +16,11 @@ public class UserApplication {
     protected static ApplicationContext applicationContext;
     public static void main(String[] args) {
         applicationContext = SpringApplication.run(UserApplication.class, args);
+    }
+    @Bean
+    RestTemplate restTemplate() {
+        RestTemplate restTemplate = new RestTemplate();
+//
+        return restTemplate;
     }
 }

@@ -2,6 +2,7 @@ package bookrental;
 
 import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -26,13 +27,23 @@ public class User {
     }
     @PostPersist
     public void onPostPersist(){
+
+        System.out.println("##### onPostPersist!! Id: " + this.getId());
+
+       bookrental.external.Point point = new bookrental.external.Point();
+        point.setUserId(this.getId());
+        point.setPoint(10);
+        point.setStatus("saved");
+        point.setUserTotalPoint(10);
+        point.setChgDate(this.getRegTime());
+        UserApplication.applicationContext.getBean(bookrental.external.PointService.class)
+                .saved(point);
+
         bookrental.UserRegistered userRegistered = new UserRegistered();
         BeanUtils.copyProperties(this, userRegistered);
         userRegistered.publishAfterCommit();
 
-
     }
-
 
     public Long getId() {
         return id;
