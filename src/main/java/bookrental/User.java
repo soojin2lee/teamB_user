@@ -30,6 +30,10 @@ public class User {
 
         System.out.println("##### onPostPersist!! Id: " + this.getId());
 
+        bookrental.UserRegistered userRegistered = new UserRegistered();
+        BeanUtils.copyProperties(this, userRegistered);
+        userRegistered.publishAfterCommit();
+
        bookrental.external.Point point = new bookrental.external.Point();
         point.setUserId(this.getId());
         point.setPoint(10);
@@ -39,9 +43,7 @@ public class User {
         UserApplication.applicationContext.getBean(bookrental.external.PointService.class)
                 .saved(point);
 
-        bookrental.UserRegistered userRegistered = new UserRegistered();
-        BeanUtils.copyProperties(this, userRegistered);
-        userRegistered.publishAfterCommit();
+
 
     }
 

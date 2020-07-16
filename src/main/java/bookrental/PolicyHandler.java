@@ -108,5 +108,22 @@ public class PolicyHandler{
             }
         }
     }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverCancelled_ChangeRentalStatus(@Payload PointCancelled cancelled){
+
+        if(cancelled.isMe()){
+            System.out.println("##### listener ChangeRentalStatus : " + cancelled.toJson());
+            Optional<User> userOptional = userRepo.findById(cancelled.getUserId());
+            if( userOptional.isPresent() ) {
+                User user = userOptional.get();
+                user.setPoint(cancelled.getUserTotalPoint());
+
+                userRepo.save(user);
+            }
+            else {
+                System.out.println("cant not find user ID!! : " + cancelled.getUserId());
+            }
+        }
+    }
 
 }
