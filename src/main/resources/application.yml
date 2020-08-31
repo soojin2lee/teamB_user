@@ -79,4 +79,4 @@ spring:
           contentType: application/json
 api:
   url:
-    point: http://admin04-point:8080
+    point: http://point:8080
